@@ -1,1 +1,738 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atelier Maille — Studio de Patron Crochet 2D</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
 
+  <!-- HEADER -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-rose-600 flex items-center justify-center text-white shadow-sm shadow-rose-200">
+          <i data-lucide="scissors" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg tracking-tight text-slate-900 leading-none">Atelier Maille</h1>
+          <p class="text-xs text-slate-500 mt-0.5">Studio de création de patrons crochet & tapisserie</p>
+        </div>
+      </div>
+
+      <div id="topActions" class="hidden items-center gap-2 sm:gap-3">
+        <button onclick="exportHighResPNG()" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+          <i data-lucide="image-down" class="w-4 h-4"></i>
+          <span>Grille HD (PNG)</span>
+        </button>
+        <button onclick="exportTextPattern()" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium bg-rose-600 hover:bg-rose-700 text-white shadow-sm transition">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          <span>Patron écrit (.TXT)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <div class="max-w-[1600px] w-full mx-auto flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 p-4 sm:p-6">
+
+    <!-- LEFT SIDEBAR: CONTROLS & PALETTE -->
+    <aside class="lg:col-span-4 xl:col-span-3 space-y-6">
+
+      <!-- UPLOAD & SETTINGS CARD -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-5">
+        <h2 class="font-semibold text-sm uppercase tracking-wider text-slate-400 flex items-center gap-2">
+          <i data-lucide="sliders" class="w-4 h-4"></i> Configuration du patron
+        </h2>
+
+        <!-- Dropzone -->
+        <label id="dropzone" class="block border-2 border-dashed border-slate-300 hover:border-rose-500 rounded-xl p-4 text-center cursor-pointer transition bg-slate-50/50 hover:bg-rose-50/30">
+          <input type="file" id="fileInput" accept="image/*" class="hidden" />
+          <div id="previewContainer" class="hidden mb-3">
+            <img id="imagePreview" class="max-h-32 mx-auto rounded-lg object-contain shadow-sm" />
+          </div>
+          <div class="flex flex-col items-center justify-center space-y-1">
+            <i data-lucide="upload-cloud" class="w-7 h-7 text-rose-500"></i>
+            <span class="text-sm font-medium text-slate-700" id="fileNameLabel">Choisir ou glisser une image</span>
+            <span class="text-xs text-slate-400">PNG, JPG, WEBP</span>
+          </div>
+        </label>
+
+        <!-- Sliders -->
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <label class="font-medium text-slate-700">Largeur (en mailles)</label>
+              <span id="widthVal" class="mono font-semibold text-rose-600">60 m.</span>
+            </div>
+            <input type="range" id="widthInput" min="15" max="150" value="60" class="w-full accent-rose-600" oninput="document.getElementById('widthVal').innerText = this.value + ' m.'" />
+          </div>
+
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <label class="font-medium text-slate-700">Nombre de pelotes (couleurs)</label>
+              <span id="colorsVal" class="mono font-semibold text-rose-600">6</span>
+            </div>
+            <input type="range" id="colorsInput" min="2" max="16" value="6" class="w-full accent-rose-600" oninput="document.getElementById('colorsVal').innerText = this.value" />
+          </div>
+
+          <div>
+            <div class="flex justify-between text-sm mb-1">
+              <label class="font-medium text-slate-700" title="Supprime les mailles isolées difficiles à crocheter">Nettoyage mailles isolées</label>
+              <span id="smoothVal" class="mono font-semibold text-rose-600">Normal</span>
+            </div>
+            <input type="range" id="smoothInput" min="0" max="3" value="1" class="w-full accent-rose-600" oninput="updateSmoothLabel(this.value)" />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Type de point (Ratio)</label>
+            <select id="ratioInput" class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-rose-500">
+              <option value="1.0">Maille serrée / C2C (Carré 1:1)</option>
+              <option value="0.85">Demi-bride (Légèrement étiré)</option>
+              <option value="0.65">Bride (Haut)</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="generateBtn" onclick="generatePattern()" class="w-full py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-[0.99] text-white font-semibold text-sm shadow-md shadow-rose-200 flex items-center justify-center gap-2 transition">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <span>Générer le patron</span>
+        </button>
+      </div>
+
+      <!-- PALETTE & YARN CALCULATOR CARD -->
+      <div id="paletteCard" class="hidden bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="font-semibold text-sm uppercase tracking-wider text-slate-400 flex items-center gap-2">
+            <i data-lucide="palette" class="w-4 h-4"></i> Pelotes & Pinceau
+          </h2>
+          <span class="text-xs text-slate-400">Cliquez pour peindre</span>
+        </div>
+
+        <p class="text-xs text-slate-500 leading-relaxed">
+          Sélectionnez une pelote ci-dessous puis cliquez sur la grille pour retoucher des mailles. Cliquez sur la pastille de couleur pour changer sa teinte.
+        </p>
+
+        <div id="paletteList" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <span>Total de l'ouvrage :</span>
+          <span id="totalStitchesBadge" class="mono font-semibold text-slate-800">0 mailles</span>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- RIGHT WORKSPACE: TABS (GRID & INSTRUCTIONS) -->
+    <main class="lg:col-span-8 xl:col-span-9 flex flex-col space-y-4">
+
+      <!-- EMPTY STATE -->
+      <div id="emptyState" class="flex-1 bg-white rounded-2xl border border-slate-200 p-12 flex flex-col items-center justify-center text-center">
+        <div class="w-16 h-16 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mb-4">
+          <i data-lucide="grid" class="w-8 h-8"></i>
+        </div>
+        <h3 class="text-lg font-bold text-slate-800">Prêt à créer votre premier patron</h3>
+        <p class="text-sm text-slate-500 max-w-md mt-1">
+          Importez une photo, une illustration ou un logo à gauche. Vous pourrez ensuite retoucher chaque maille à la souris et suivre votre avancement rang par rang.
+        </p>
+      </div>
+
+      <!-- WORKSPACE CONTENT -->
+      <div id="workspace" class="hidden flex-1 flex flex-col space-y-4">
+
+        <!-- TOP TOOLBAR & TABS -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-3 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+          <!-- Tabs -->
+          <div class="flex items-center bg-slate-100 p-1 rounded-xl">
+            <button id="tabGridBtn" onclick="switchTab('grid')" class="px-4 py-1.5 rounded-lg text-sm font-semibold bg-white text-slate-900 shadow-sm transition">
+              Grille Interactive
+            </button>
+            <button id="tabTextBtn" onclick="switchTab('text')" class="px-4 py-1.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition">
+              Instructions Rang par Rang
+            </button>
+          </div>
+
+          <!-- Grid Controls -->
+          <div id="gridToolbar" class="flex flex-wrap items-center gap-2">
+            <label class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200 cursor-pointer">
+              <input type="checkbox" id="showSymbolsToggle" checked onchange="renderCanvas()" class="accent-rose-600 rounded" />
+              <span>Symboles</span>
+            </label>
+            <label class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200 cursor-pointer">
+              <input type="checkbox" id="showGridToggle" checked onchange="renderCanvas()" class="accent-rose-600 rounded" />
+              <span>Quadrillage</span>
+            </label>
+            <div class="flex items-center bg-slate-50 rounded-lg border border-slate-200">
+              <button onclick="changeZoom(-4)" class="p-1.5 hover:bg-slate-200 rounded-l-lg text-slate-600" title="Dézoomer">
+                <i data-lucide="zoom-out" class="w-4 h-4"></i>
+              </button>
+              <span id="zoomLabel" class="px-2 text-xs mono font-medium text-slate-600">18px</span>
+              <button onclick="changeZoom(4)" class="p-1.5 hover:bg-slate-200 rounded-r-lg text-slate-600" title="Zoomer">
+                <i data-lucide="zoom-in" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Row Focus Indicator -->
+          <div id="activeRowBanner" class="hidden items-center gap-2 bg-amber-50 border border-amber-200 text-amber-800 px-3 py-1 rounded-lg text-xs font-medium">
+            <span id="activeRowText">Rang sélectionné : #1</span>
+            <button onclick="setActiveRow(null)" class="text-amber-600 hover:text-amber-900 font-bold ml-1">✕</button>
+          </div>
+        </div>
+
+        <!-- TAB 1: INTERACTIVE CANVAS -->
+        <div id="tabGridContent" class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex-1 overflow-auto max-h-[75vh] flex items-start justify-center">
+          <canvas id="patternCanvas" class="cursor-crosshair shadow-sm"></canvas>
+        </div>
+
+        <!-- TAB 2: ROW BY ROW WRITTEN INSTRUCTIONS -->
+        <div id="tabTextContent" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex-1 flex flex-col space-y-4 max-h-[75vh]">
+          <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100">
+            <div>
+              <h3 class="font-bold text-slate-800">Suivi Rang par Rang (Départ du Bas — Rang 1)</h3>
+              <p class="text-xs text-slate-500">Cliquez sur un rang pour le cocher et le mettre en évidence sur la grille.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="text-xs font-medium text-slate-600">Mode de lecture :</label>
+              <select id="readingMode" onchange="renderWrittenInstructions()" class="rounded-lg border border-slate-200 px-3 py-1.5 text-xs bg-slate-50 font-medium">
+                <option value="aller-retour">Aller-retour (Impairs D→G, Pairs G→D)</option>
+                <option value="standard">Toujours de Droite à Gauche (En rond)</option>
+                <option value="gauche-droite">Toujours de Gauche à Droite</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="instructionsList" class="space-y-2.5 overflow-y-auto pr-2 flex-1"></div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // État global de l'application
+    let state = {
+      width: 0,
+      height: 0,
+      grid: [],       // Matrice 2D [row][col] (0 = haut de l'image, height-1 = bas de l'image = Rang 1 au crochet)
+      palette: [],    // [{id, code, name, hex, symbol}]
+      activeColorId: 0,
+      cellSize: 18,
+      isPainting: false,
+      activeCrochetRow: null, // Numéro de rang crochet (1 = bas, height = haut)
+      completedRows: new Set()
+    };
+
+    // Restauration de la sauvegarde locale éventuelle
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('atelier_maille_state');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed.grid && parsed.grid.length > 0) {
+            state.width = parsed.width;
+            state.height = parsed.height;
+            state.grid = parsed.grid;
+            state.palette = parsed.palette;
+            state.completedRows = new Set(parsed.completedRows || []);
+            showWorkspace();
+            renderAll();
+          }
+        } catch (e) {}
+      }
+    });
+
+    function saveToLocal() {
+      try {
+        localStorage.setItem('atelier_maille_state', JSON.stringify({
+          width: state.width,
+          height: state.height,
+          grid: state.grid,
+          palette: state.palette,
+          completedRows: Array.from(state.completedRows)
+        }));
+      } catch (e) {}
+    }
+
+    function updateSmoothLabel(val) {
+      const labels = ["Aucun (Brut)", "Normal", "Fort", "Maximum"];
+      document.getElementById('smoothVal').innerText = labels[val] || "Normal";
+    }
+
+    // Gestion de l'aperçu image à l'upload
+    const fileInput = document.getElementById('fileInput');
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.getElementById('fileNameLabel').innerText = file.name;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        document.getElementById('imagePreview').src = ev.target.result;
+        document.getElementById('previewContainer').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    async function generatePattern() {
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("Veuillez d'abord sélectionner une image.");
+        return;
+      }
+
+      const btn = document.getElementById('generateBtn');
+      const originalHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<span class="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></span><span>Calcul du patron...</span>`;
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('width', document.getElementById('widthInput').value);
+      formData.append('n_colors', document.getElementById('colorsInput').value);
+      formData.append('smooth_level', document.getElementById('smoothInput').value);
+      formData.append('stitch_ratio', document.getElementById('ratioInput').value);
+
+      try {
+        const res = await fetch('/api/generate', { method: 'POST', body: formData });
+        if (!res.ok) throw new Error("Erreur serveur");
+        const data = await res.json();
+
+        state.width = data.width;
+        state.height = data.height;
+        state.grid = data.grid;
+        state.palette = data.palette;
+        state.activeColorId = 0;
+        state.activeCrochetRow = null;
+        state.completedRows.clear();
+
+        showWorkspace();
+        renderAll();
+        saveToLocal();
+      } catch (err) {
+        alert("Impossible de générer le patron : " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+        lucide.createIcons();
+      }
+    }
+
+    function showWorkspace() {
+      document.getElementById('emptyState').classList.add('hidden');
+      document.getElementById('workspace').classList.remove('hidden');
+      document.getElementById('paletteCard').classList.remove('hidden');
+      document.getElementById('topActions').classList.remove('hidden');
+      document.getElementById('topActions').classList.add('flex');
+    }
+
+    function renderAll() {
+      renderPalette();
+      renderCanvas();
+      renderWrittenInstructions();
+    }
+
+    // Calcul de contraste pour afficher les symboles en blanc ou noir
+    function getContrastColor(hex) {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+      return yiq >= 140 ? '#0f172a' : '#ffffff';
+    }
+
+    // Rendu de la liste des pelotes et comptage des mailles en temps réel
+    function renderPalette() {
+      const counts = new Array(state.palette.length).fill(0);
+      for (let r = 0; r < state.height; r++) {
+        for (let c = 0; c < state.width; c++) {
+          counts[state.grid[r][c]]++;
+        }
+      }
+
+      const totalStitches = state.width * state.height;
+      document.getElementById('totalStitchesBadge').innerText = `${totalStitches} mailles (${state.width}×${state.height})`;
+
+      const container = document.getElementById('paletteList');
+      container.innerHTML = '';
+
+      state.palette.forEach((p) => {
+        const count = counts[p.id] || 0;
+        // Estimation métrage : ~1.8 cm de fil par maille serrée standard
+        const meters = Math.ceil((count * 1.8) / 100);
+        const isSelected = state.activeColorId === p.id;
+
+        const row = document.createElement('div');
+        row.className = `flex items-center justify-between p-2 rounded-xl border transition cursor-pointer ${
+          isSelected ? 'border-rose-500 bg-rose-50/60 ring-1 ring-rose-500' : 'border-slate-200 hover:bg-slate-50'
+        }`;
+        row.onclick = () => {
+          state.activeColorId = p.id;
+          renderPalette();
+        };
+
+        row.innerHTML = `
+          <div class="flex items-center gap-2.5">
+            <label class="relative w-7 h-7 rounded-lg shadow-inner border border-black/10 flex items-center justify-center cursor-pointer shrink-0" style="background-color: ${p.hex}; color: ${getContrastColor(p.hex)}" onclick="event.stopPropagation()">
+              <span class="text-xs font-bold">${p.symbol}</span>
+              <input type="color" value="${p.hex}" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer" onchange="updatePaletteColor(${p.id}, this.value)" />
+            </label>
+            <div>
+              <div class="text-xs font-bold text-slate-800">Pelote ${p.code}</div>
+              <div class="text-[11px] text-slate-500 mono">${count} m. (~${meters}m)</div>
+            </div>
+          </div>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-600 mono">
+            ${Math.round((count / totalStitches) * 100)}%
+          </span>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function updatePaletteColor(id, newHex) {
+      const target = state.palette.find(p => p.id === id);
+      if (target) {
+        target.hex = newHex.toUpperCase();
+        renderAll();
+        saveToLocal();
+      }
+    }
+
+    // Rendu de la grille sur le Canvas HTML5
+    const canvas = document.getElementById('patternCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function renderCanvas() {
+      if (!state.grid.length) return;
+
+      const cs = state.cellSize;
+      const margin = 32; // Marge pour afficher les numéros de rangs et de mailles
+      const w = state.width * cs + margin * 2;
+      const h = state.height * cs + margin * 2;
+
+      canvas.width = w;
+      canvas.height = h;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
+
+      const showSymbols = document.getElementById('showSymbolsToggle').checked;
+      const showGrid = document.getElementById('showGridToggle').checked;
+
+      // Dessin des cellules
+      for (let r = 0; r < state.height; r++) {
+        // Au crochet, le Rang 1 est en bas (r = state.height - 1)
+        const crochetRowNum = state.height - r;
+        const isRowDimmed = state.activeCrochetRow !== null && state.activeCrochetRow !== crochetRowNum;
+
+        for (let c = 0; c < state.width; c++) {
+          const colorObj = state.palette[state.grid[r][c]] || state.palette[0];
+          const x = margin + c * cs;
+          const y = margin + r * cs;
+
+          ctx.fillStyle = colorObj.hex;
+          ctx.fillRect(x, y, cs, cs);
+
+          if (isRowDimmed) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
+            ctx.fillRect(x, y, cs, cs);
+          }
+
+          if (showSymbols && cs >= 12) {
+            ctx.fillStyle = isRowDimmed ? 'rgba(15, 23, 42, 0.25)' : getContrastColor(colorObj.hex);
+            ctx.font = `bold ${Math.floor(cs * 0.55)}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(colorObj.symbol, x + cs / 2, y + cs / 2 + 1);
+          }
+        }
+      }
+
+      // Dessin du quadrillage et des repères tous les 5 blocs
+      if (showGrid) {
+        for (let r = 0; r <= state.height; r++) {
+          const y = margin + r * cs;
+          const isMajor = (state.height - r) % 5 === 0;
+          ctx.beginPath();
+          ctx.moveTo(margin, y);
+          ctx.lineTo(margin + state.width * cs, y);
+          ctx.strokeStyle = isMajor ? '#334155' : '#cbd5e1';
+          ctx.lineWidth = isMajor ? 1.5 : 0.5;
+          ctx.stroke();
+        }
+        for (let c = 0; c <= state.width; c++) {
+          const x = margin + c * cs;
+          const isMajor = c % 5 === 0;
+          ctx.beginPath();
+          ctx.moveTo(x, margin);
+          ctx.lineTo(x, margin + state.height * cs);
+          ctx.strokeStyle = isMajor ? '#334155' : '#cbd5e1';
+          ctx.lineWidth = isMajor ? 1.5 : 0.5;
+          ctx.stroke();
+        }
+      }
+
+      // Encadré lumineux sur le rang actif
+      if (state.activeCrochetRow !== null) {
+        const r = state.height - state.activeCrochetRow;
+        const y = margin + r * cs;
+        ctx.strokeStyle = '#e11d48';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(margin - 1, y - 1, state.width * cs + 2, cs + 2);
+      }
+
+      // Numéros des rangs (1 en bas jusqu'à H en haut)
+      ctx.fillStyle = '#475569';
+      ctx.font = '600 10px JetBrains Mono, monospace';
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      for (let r = 0; r < state.height; r++) {
+        const crochetRow = state.height - r;
+        if (crochetRow === 1 || crochetRow % 5 === 0 || crochetRow === state.height) {
+          const y = margin + r * cs + cs / 2;
+          ctx.fillText(crochetRow, margin - 6, y);
+        }
+      }
+
+      // Numéros de colonnes (en bas, de droite à gauche ou gauche à droite)
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (let c = 0; c < state.width; c++) {
+        const colNum = c + 1;
+        if (colNum === 1 || colNum % 5 === 0 || colNum === state.width) {
+          const x = margin + c * cs + cs / 2;
+          ctx.fillText(colNum, x, margin + state.height * cs + 6);
+        }
+      }
+    }
+
+    // Édition au clic / glisser sur le Canvas
+    function paintAtEvent(e) {
+      const rect = canvas.getBoundingClientRect();
+      const margin = 32;
+      const x = e.clientX - rect.left - margin;
+      const y = e.clientY - rect.top - margin;
+      const c = Math.floor(x / state.cellSize);
+      const r = Math.floor(y / state.cellSize);
+
+      if (r >= 0 && r < state.height && c >= 0 && c < state.width) {
+        if (state.grid[r][c] !== state.activeColorId) {
+          state.grid[r][c] = state.activeColorId;
+          renderCanvas();
+        }
+      }
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+      state.isPainting = true;
+      paintAtEvent(e);
+    });
+    canvas.addEventListener('mousemove', (e) => {
+      if (state.isPainting) paintAtEvent(e);
+    });
+    window.addEventListener('mouseup', () => {
+      if (state.isPainting) {
+        state.isPainting = false;
+        renderPalette();
+        renderWrittenInstructions();
+        saveToLocal();
+      }
+    });
+
+    function changeZoom(delta) {
+      state.cellSize = Math.max(8, Math.min(42, state.cellSize + delta));
+      document.getElementById('zoomLabel').innerText = state.cellSize + 'px';
+      renderCanvas();
+    }
+
+    function setActiveRow(crochetRowNum) {
+      state.activeCrochetRow = crochetRowNum;
+      const banner = document.getElementById('activeRowBanner');
+      if (crochetRowNum === null) {
+        banner.classList.add('hidden');
+        banner.classList.remove('flex');
+      } else {
+        banner.classList.remove('hidden');
+        banner.classList.add('flex');
+        document.getElementById('activeRowText').innerText = `Focus Rang #${crochetRowNum}`;
+      }
+      renderCanvas();
+      renderWrittenInstructions();
+    }
+
+    // Génération des instructions Rang par Rang (encodage par plages / Run-Length Encoding)
+    function getRowBlocks(rowArray, direction) {
+      const seq = direction === 'D->G' ? [...rowArray].reverse() : [...rowArray];
+      const blocks = [];
+      if (!seq.length) return blocks;
+
+      let currentId = seq[0];
+      let count = 1;
+      for (let i = 1; i < seq.length; i++) {
+        if (seq[i] === currentId) {
+          count++;
+        } else {
+          blocks.push({ color: state.palette[currentId], count });
+          currentId = seq[i];
+          count = 1;
+        }
+      }
+      blocks.push({ color: state.palette[currentId], count });
+      return blocks;
+    }
+
+    function renderWrittenInstructions() {
+      const container = document.getElementById('instructionsList');
+      if (!state.grid.length) return;
+      const mode = document.getElementById('readingMode').value;
+      container.innerHTML = '';
+
+      // Du Rang 1 (bas de l'image : state.height - 1) au Rang H (haut : 0)
+      for (let crochetRow = 1; crochetRow <= state.height; crochetRow++) {
+        const rIndex = state.height - crochetRow;
+        let direction = 'D->G';
+        if (mode === 'aller-retour') {
+          direction = (crochetRow % 2 === 1) ? 'D->G' : 'G->D';
+        } else if (mode === 'gauche-droite') {
+          direction = 'G->D';
+        }
+
+        const blocks = getRowBlocks(state.grid[rIndex], direction);
+        const isDone = state.completedRows.has(crochetRow);
+        const isFocused = state.activeCrochetRow === crochetRow;
+
+        const card = document.createElement('div');
+        card.className = `p-3 rounded-xl border transition flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+          isFocused ? 'border-rose-500 bg-rose-50/40 ring-1 ring-rose-500' :
+          isDone ? 'border-emerald-200 bg-emerald-50/30 opacity-65' : 'border-slate-200 bg-slate-50/50 hover:bg-slate-50'
+        }`;
+
+        const blocksHtml = blocks.map(b => `
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border border-black/10 shadow-sm"
+                style="background-color: ${b.color.hex}; color: ${getContrastColor(b.color.hex)}">
+            <span>${b.count} × ${b.color.code}</span>
+          </span>
+        `).join('');
+
+        card.innerHTML = `
+          <div class="flex items-start sm:items-center gap-3">
+            <input type="checkbox" ${isDone ? 'checked' : ''} class="mt-1 sm:mt-0 w-4 h-4 accent-emerald-600 rounded cursor-pointer"
+                   onclick="toggleRowDone(event, ${crochetRow})" title="Marquer comme terminé" />
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-sm text-slate-800 ${isDone ? 'line-through' : ''}">Rang ${crochetRow}</span>
+                <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-slate-200/70 text-slate-600 mono">
+                  ${direction === 'D->G' ? '← Droite à Gauche (Endroit)' : '→ Gauche à Droite (Envers)'}
+                </span>
+              </div>
+              <div class="flex flex-wrap gap-1.5 mt-2">${blocksHtml}</div>
+            </div>
+          </div>
+          <button onclick="setActiveRow(${isFocused ? 'null' : crochetRow})"
+                  class="self-end sm:self-center shrink-0 text-xs font-medium px-2.5 py-1.5 rounded-lg border ${
+                    isFocused ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
+                  }">
+            ${isFocused ? 'Ciblé sur grille' : 'Voir sur grille'}
+          </button>
+        `;
+        container.appendChild(card);
+      }
+    }
+
+    function toggleRowDone(e, crochetRow) {
+      e.stopPropagation();
+      if (state.completedRows.has(crochetRow)) {
+        state.completedRows.delete(crochetRow);
+      } else {
+        state.completedRows.add(crochetRow);
+      }
+      saveToLocal();
+      renderWrittenInstructions();
+    }
+
+    function switchTab(tab) {
+      const isGrid = tab === 'grid';
+      document.getElementById('tabGridContent').classList.toggle('hidden', !isGrid);
+      document.getElementById('gridToolbar').classList.toggle('hidden', !isGrid);
+      document.getElementById('tabTextContent').classList.toggle('hidden', isGrid);
+
+      document.getElementById('tabGridBtn').className = isGrid
+        ? 'px-4 py-1.5 rounded-lg text-sm font-semibold bg-white text-slate-900 shadow-sm transition'
+        : 'px-4 py-1.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition';
+      document.getElementById('tabTextBtn').className = !isGrid
+        ? 'px-4 py-1.5 rounded-lg text-sm font-semibold bg-white text-slate-900 shadow-sm transition'
+        : 'px-4 py-1.5 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 transition';
+    }
+
+    // Export du fichier texte complet Rang par Rang
+    function exportTextPattern() {
+      const mode = document.getElementById('readingMode').value;
+      let lines = [];
+      lines.push("====================================================");
+      lines.push("         PATRON CROCHET — ATELIER MAILLE            ");
+      lines.push("====================================================");
+      lines.push(`Dimensions : ${state.width} mailles de large × ${state.height} rangs de haut`);
+      lines.push(`Total      : ${state.width * state.height} mailles\n`);
+      lines.push("PALETTE DES PELOTES :");
+      state.palette.forEach(p => {
+        lines.push(`  - Pelote ${p.code} (${p.symbol}) : ${p.hex}`);
+      });
+      lines.push("\nINSTRUCTIONS RANG PAR RANG (Départ en bas) :");
+      lines.push("----------------------------------------------------");
+
+      for (let crochetRow = 1; crochetRow <= state.height; crochetRow++) {
+        const rIndex = state.height - crochetRow;
+        let direction = 'D->G';
+        if (mode === 'aller-retour') {
+          direction = (crochetRow % 2 === 1) ? 'D->G' : 'G->D';
+        } else if (mode === 'gauche-droite') {
+          direction = 'G->D';
+        }
+        const blocks = getRowBlocks(state.grid[rIndex], direction);
+        const textBlocks = blocks.map(b => `${b.count} ${b.color.code}`).join(', ');
+        lines.push(`Rang ${String(crochetRow).padStart(3, ' ')} [${direction}] : ${textBlocks}`);
+      }
+
+      const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `patron-crochet-${state.width}x${state.height}.txt`;
+      a.click();
+    }
+
+    // Export d'une planche PNG Haute Définition avec la grille
+    function exportHighResPNG() {
+      const prevSize = state.cellSize;
+      const prevRow = state.activeCrochetRow;
+      state.cellSize = 24;
+      state.activeCrochetRow = null;
+      renderCanvas();
+
+      const url = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `grille-crochet-${state.width}x${state.height}.png`;
+      a.click();
+
+      state.cellSize = prevSize;
+      state.activeCrochetRow = prevRow;
+      renderCanvas();
+    }
+  </script>
+</body>
+</html>
