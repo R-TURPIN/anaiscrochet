@@ -66,4 +66,337 @@
       </p>
 
       <p class="text-zinc-300 text-sm sm:text-base mt-4 max-w-2xl mx-auto leading-relaxed">
-        Pourquoi courir tout droit quand on peut tourner à gauche pendant 14 jours d
+        Pourquoi courir tout droit quand on peut tourner à gauche pendant 14 jours d'affilée ? 
+        Pas de carte, pas de boussole, zéro virage à droite. On pose le groupe au milieu, on lance le chrono, et <strong>celui qui fait le plus de tours de La Mèke entre dans la légende</strong>.
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="#ticket-gen" class="btn-pulse bg-yellow-400 hover:bg-yellow-300 text-black font-black text-base px-8 py-4 rounded-2xl uppercase tracking-wide shadow-xl">
+          🎟️ Générer mon Billet Officiel
+        </a>
+        <a href="#simulateur" class="bg-zinc-800 hover:bg-zinc-700 text-white font-bold text-sm px-6 py-4 rounded-2xl border border-white/15">
+          🌀 Tester ma résistance au tournis
+        </a>
+      </div>
+
+      <!-- COMPTEURS STUPIDES -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 text-left">
+        <div class="bg-black/60 border border-white/10 p-3.5 rounded-2xl">
+          <div class="text-[10px] text-zinc-400 uppercase font-bold">Distance Totale</div>
+          <div class="font-impact text-2xl text-yellow-400 mt-0.5">INFINIE</div>
+          <div class="text-[11px] text-zinc-500">Jusqu'au malaise vagal</div>
+        </div>
+        <div class="bg-black/60 border border-white/10 p-3.5 rounded-2xl">
+          <div class="text-[10px] text-zinc-400 uppercase font-bold">Virages à droite</div>
+          <div class="font-impact text-2xl text-red-500 mt-0.5">0 (INTERDIT)</div>
+          <div class="text-[11px] text-zinc-500">Élimination directe</div>
+        </div>
+        <div class="bg-black/60 border border-white/10 p-3.5 rounded-2xl">
+          <div class="text-[10px] text-zinc-400 uppercase font-bold">Arbitre Officiel</div>
+          <div class="font-impact text-2xl text-white mt-0.5">1 MEC ASSIS</div>
+          <div class="text-[11px] text-zinc-500">Sur une chaise Quechua</div>
+        </div>
+        <div class="bg-black/60 border border-white/10 p-3.5 rounded-2xl">
+          <div class="text-[10px] text-zinc-400 uppercase font-bold">Récompense</div>
+          <div class="font-impact text-2xl text-emerald-400 mt-0.5">RESPECT ÉTERNEL</div>
+          <div class="text-[11px] text-zinc-500">+ 1 Menu Maxi Best Of</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MINI-JEU / SIMULATEUR DE TOURNIS -->
+    <section id="simulateur" class="rounded-3xl border border-white/15 bg-zinc-900/80 p-6 sm:p-8 text-center space-y-5">
+      <div class="inline-block px-3 py-1 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30 text-xs font-bold mono">
+        SIMULATEUR D'ENTRAÎNEMENT HOMOLOGUÉ
+      </div>
+      <h2 class="font-impact text-3xl uppercase">Entraîne ton oreille interne avant le départ</h2>
+      <p class="text-xs sm:text-sm text-zinc-400 max-w-md mx-auto">
+        Clique le plus vite possible sur le bouton pour faire des tours autour du Cube. Attention aux dégâts cérébraux.
+      </p>
+
+      <!-- ARÈNE DE ROTATION -->
+      <div class="relative w-56 h-56 mx-auto rounded-full border-4 border-dashed border-yellow-400/40 flex items-center justify-center bg-black/50">
+        <!-- Le Cube Central -->
+        <div class="w-16 h-16 bg-zinc-900 border-2 border-yellow-400 rounded-lg flex items-center justify-center text-3xl shadow-lg">
+          🕋
+        </div>
+        <!-- Le Coureur en Orbite -->
+        <div id="orbitRunner" class="absolute inset-0 transition-transform duration-150" style="transform: rotate(0deg);">
+          <div class="w-9 h-9 bg-red-600 rounded-full flex items-center justify-center text-lg shadow-md -mt-4 mx-auto border-2 border-white">
+            🏃🏽‍♂️
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <div class="font-impact text-4xl text-yellow-400" id="simCounter">0 TOUR EFFECTUÉ</div>
+        <div class="text-xs font-bold text-emerald-400 mono h-5" id="simStatus">État actuel : Frais comme un gardon, claquettes bien serrées.</div>
+      </div>
+
+      <button onclick="doLap()" class="bg-yellow-400 active:scale-95 hover:bg-yellow-300 text-black font-black text-sm sm:text-base px-8 py-4 rounded-2xl uppercase shadow-lg transition select-none">
+        🌀 FAIRE UN TOUR DE LA MÈKE (+1)
+      </button>
+    </section>
+
+    <!-- LE PROGRAMME OFFICIEL SUR 12 ANS -->
+    <section class="rounded-3xl border border-white/15 bg-zinc-900/50 p-6 sm:p-8 space-y-6">
+      <div>
+        <span class="text-xs font-bold uppercase text-yellow-400 mono">Planning Prévisionnel</span>
+        <h2 class="font-impact text-3xl uppercase mt-1">Déroulement de l'Épreuve Minute par Minute</h2>
+      </div>
+
+      <div class="space-y-3 text-sm">
+        <div class="p-4 rounded-2xl bg-black/60 border border-white/10 flex gap-4 items-start">
+          <span class="bg-yellow-400 text-black font-black mono text-xs px-2.5 py-1 rounded shrink-0">JOUR 1 • 08H00</span>
+          <div>
+            <div class="font-extrabold text-white">Départ arrêté type Grand Prix de Monaco</div>
+            <p class="text-xs text-zinc-400 mt-1">Tout le groupe Snap s'aligne sur 4 rangées. Dès que les feux s'éteignent, ça part en sprint complet alors qu'il reste 4 000 kilomètres à faire.</p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-black/60 border border-white/10 flex gap-4 items-start">
+          <span class="bg-yellow-400 text-black font-black mono text-xs px-2.5 py-1 rounded shrink-0">JOUR 1 • 08H03</span>
+          <div>
+            <div class="font-extrabold text-white">Premier abandon officiel (Record de précocité)</div>
+            <p class="text-xs text-zinc-400 mt-1">Au bout de 2 tours et demi, un membre du groupe s'assoit par terre en prétextant « une vieille blessure aux croisés au five en 2019 ».</p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-black/60 border border-white/10 flex gap-4 items-start">
+          <span class="bg-yellow-400 text-black font-black mono text-xs px-2.5 py-1 rounded shrink-0">JOUR 4 • 16H30</span>
+          <div>
+            <div class="font-extrabold text-white">Création d'un Vortex Météorologique</div>
+            <p class="text-xs text-zinc-400 mt-1">À force de tourner en rond à 14 km/h, les survivants créent une dépression atmosphérique locale. Les pigeons sont aspirés dans la rotation.</p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-black/60 border border-white/10 flex gap-4 items-start">
+          <span class="bg-yellow-400 text-black font-black mono text-xs px-2.5 py-1 rounded shrink-0">JOUR 19 • 02H15</span>
+          <div>
+            <div class="font-extrabold text-white">Perte totale de la notion de ligne droite</div>
+            <p class="text-xs text-zinc-400 mt-1">Le cerveau des coureurs est bloqué à gauche. Même pour aller aux toilettes au ravitaillement, ils sont obligés de faire trois boucles autour du lavabo.</p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-black/60 border border-red-500/40 flex gap-4 items-start">
+          <span class="bg-red-600 text-white font-black mono text-xs px-2.5 py-1 rounded shrink-0">ANNÉE 2032</span>
+          <div>
+            <div class="font-extrabold text-red-400">Le Duel Final</div>
+            <p class="text-xs text-zinc-400 mt-1">Il n'en reste plus que deux. Leurs jambes gauches ont fondu de 18 cm à cause de l'inclinaison dans les virages. Ils refusent toujours d'abandonner par pure fierté mal placée.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BILLETTERIE / PACKS ABSURDES -->
+    <section id="billetterie" class="space-y-6">
+      <div class="text-center">
+        <span class="text-xs font-bold uppercase text-yellow-400 mono">Billetterie Officielle</span>
+        <h2 class="font-impact text-3xl sm:text-4xl uppercase mt-1">Choisis ton Pack d'Engagement</h2>
+        <p class="text-xs text-zinc-400">Paiement accepté en virement Lydia, tickets restaurant périmés ou dattes de contrebande.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- PACK 1 -->
+        <div class="rounded-3xl border border-white/15 bg-zinc-900/60 p-6 flex flex-col justify-between">
+          <div class="space-y-3">
+            <span class="text-[10px] font-bold uppercase px-2.5 py-1 rounded bg-zinc-800 text-zinc-300 mono">Catégorie Touriste</span>
+            <h3 class="font-impact text-2xl uppercase">Pack « Point de Côté »</h3>
+            <div class="font-impact text-3xl text-yellow-400">0 € <span class="text-xs font-sans text-zinc-400 font-normal">/ financé par ta dignité</span></div>
+            <ul class="space-y-2 text-xs text-zinc-300 pt-2 border-t border-white/10">
+              <li>✅ Droit de tourner sur la file extérieure (avec les poussettes)</li>
+              <li>✅ 1 gobelet d'eau tiède tous les 100 tours</li>
+              <li>✅ Civière réservée à ton nom dès le 12ème tour</li>
+              <li>❌ Interdiction de doubler en klaxonnant</li>
+            </ul>
+          </div>
+          <a href="#ticket-gen" onclick="selectPack('PACK POINT DE CÔTÉ (CAT. TOURISTE)')" class="mt-6 block text-center py-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-extrabold uppercase">
+            Choisir ce pack
+          </a>
+        </div>
+
+        <!-- PACK 2 -->
+        <div class="rounded-3xl border-2 border-yellow-400 bg-zinc-900 p-6 flex flex-col justify-between relative shadow-xl">
+          <div class="absolute -top-3 right-4 bg-yellow-400 text-black text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase">
+            Le plus populaire
+          </div>
+          <div class="space-y-3">
+            <span class="text-[10px] font-bold uppercase px-2.5 py-1 rounded bg-yellow-400/20 text-yellow-300 mono">Catégorie Toupie Beyblade</span>
+            <h3 class="font-impact text-2xl uppercase">Pack « Télépéage Gauche »</h3>
+            <div class="font-impact text-3xl text-yellow-400">1 Kebab <span class="text-xs font-sans text-zinc-400 font-normal">/ caution à l'inscription</span></div>
+            <ul class="space-y-2 text-xs text-zinc-300 pt-2 border-t border-white/10">
+              <li>✅ Accès exclusif à la corde (couloir rapide 130 km/h)</li>
+              <li>✅ Rétroviseur de poignet pour surveiller les traîtres du groupe</li>
+              <li>✅ 1 spray WD-40 pour dégripper ta cheville gauche</li>
+              <li>✅ Droit de faire un croche-pied légal toutes les 4 heures</li>
+            </ul>
+          </div>
+          <a href="#ticket-gen" onclick="selectPack('PACK TÉLÉPÉAGE GAUCHE (BEYBLADE PRO)')" class="mt-6 block text-center py-3 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black text-xs font-black uppercase">
+            Sélectionner ce pack
+          </a>
+        </div>
+
+        <!-- PACK 3 -->
+        <div class="rounded-3xl border border-white/15 bg-zinc-900/60 p-6 flex flex-col justify-between">
+          <div class="space-y-3">
+            <span class="text-[10px] font-bold uppercase px-2.5 py-1 rounded bg-red-500/20 text-red-400 mono">Catégorie Dégénéré</span>
+            <h3 class="font-impact text-2xl uppercase">Pack « Ventilateur Dyson »</h3>
+            <div class="font-impact text-3xl text-yellow-400">Ton Rein <span class="text-xs font-sans text-zinc-400 font-normal">/ sans anesthésie</span></div>
+            <ul class="space-y-2 text-xs text-zinc-300 pt-2 border-t border-white/10">
+              <li>✅ Propulsé au départ par une fronde géante</li>
+              <li>✅ Perfusion continue de Red Bull & sirop de datte</li>
+              <li>✅ Un daron payé pour courir derrière toi avec une claquette si tu ralentis</li>
+              <li>✅ Homologation Livre Guinness des Records du Groupe</li>
+            </ul>
+          </div>
+          <a href="#ticket-gen" onclick="selectPack('PACK VENTILATEUR DYSON (ULTRA VIP)')" class="mt-6 block text-center py-3 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-extrabold uppercase">
+            Choisir ce pack
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ COMPLÈTEMENT INUTILE -->
+    <section class="rounded-3xl border border-white/15 bg-zinc-900/40 p-6 sm:p-8 space-y-4">
+      <h2 class="font-impact text-3xl uppercase">Questions Fréquentes (F.A.Q de l'Organisation)</h2>
+
+      <div class="space-y-3 text-xs sm:text-sm">
+        <div class="p-4 rounded-2xl bg-black/50 border border-white/5">
+          <div class="font-extrabold text-yellow-400">❓ Si j'ai le tournis au tour 450, j'ai le droit de faire 10 tours dans l'autre sens pour me dévisser la tête ?</div>
+          <p class="text-zinc-300 mt-1">Non. Toute rotation dans le sens des aiguilles d'une montre décompte tes tours acquis et provoque un bug dans la rotation de la Terre. Tu vomis en courant et tu continues à gauche.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-black/50 border border-white/5">
+          <div class="font-extrabold text-yellow-400">❓ Comment l'arbitre du groupe vérifie qu'on ne triche pas en coupant à travers le cube ?</div>
+          <p class="text-zinc-300 mt-1">Déjà parce qu'il y a un mur en pierre au milieu, donc si tu coupes tout droit tu perds quatre incisives. Ensuite, chaque coureur doit crier « BIP BIP » à chaque passage devant la chaise pliante du juge.</p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-black/50 border border-white/5">
+          <div class="font-extrabold text-yellow-400">❓ Est-ce qu'on a le droit de courir en tenant le vêtement du mec devant pour se faire tracter ?</div>
+          <p class="text-zinc-300 mt-1">L'aspiration aérodynamique (DRS) est autorisée à moins d'un mètre, mais s'accrocher physiquement au collègue est puni de 30 tours supplémentaires avec un caillou dans la chaussure gauche.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GÉNÉRATEUR DE BILLET D'EMBARQUEMENT SNAP -->
+    <section id="ticket-gen" class="rounded-3xl border-2 border-yellow-400 bg-zinc-900 p-6 sm:p-8 space-y-6">
+      <div>
+        <span class="text-xs font-black uppercase text-red-500 mono">Validation Obligatoire</span>
+        <h2 class="font-impact text-3xl uppercase mt-1">Imprime ton Billet d'Engagement pour le Groupe Snap</h2>
+        <p class="text-xs text-zinc-400">Remplis ton profil, prends un screen du billet ci-dessous et envoie-le dans le groupe pour prouver que tu ne vas pas te dégonfler.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+        <!-- FORMULAIRE -->
+        <div class="md:col-span-5 space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-zinc-300 mb-1">Ton Blase / Pseudo dans le groupe</label>
+            <input type="text" id="pName" value="LE TOURBILLON DU 974" oninput="updateTicket()"
+                   class="w-full rounded-xl bg-black border border-white/20 px-3.5 py-2.5 text-sm text-white font-bold focus:outline-none focus:border-yellow-400" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-zinc-300 mb-1">Ton Handicap Physique de Départ</label>
+            <select id="pHandicap" onchange="updateTicket()" class="w-full rounded-xl bg-black border border-white/20 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-yellow-400">
+              <option value="CARDIO DE FUMEUR DE PUFF">Cardio de fumeur de Puff goût pastèque</option>
+              <option value="GENOU GAUCHE QUI GRINCE DEPUIS 2021">Genou gauche qui grince depuis 2021</option>
+              <option value="COURT EN CLAQUETTES TROP PETITES">Court en claquettes 2 pointures trop petites</option>
+              <option value="VIENT DE MANGER UN COUSCOUS 4 VIANDES">Vient d'engloutir un couscous 4 viandes</option>
+              <option value="AUCUN (MACHINE DE GUERRE)">Aucun : Machine de guerre homologuée</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-zinc-300 mb-1">Technique de Fourbe Prévue</label>
+            <select id="pStrat" onchange="updateTicket()" class="w-full rounded-xl bg-black border border-white/20 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-yellow-400">
+              <option value="SE CACHER DERRIÈRE UN PILIER 4 HEURES">Se cacher derrière un pilier pendant 4h</option>
+              <option value="FAIRE DES CROCHE-PIEDS AUX POTES">Balayette discrète au 80ème tour</option>
+              <option value="SPRINT AU DÉPART PUIS COMA">Sprint au 1er tour puis coma hydraulique</option>
+              <option value="COURIR EN CRABE LES YEUX FERMÉS">Courir en crabe les yeux fermés</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- LE BILLET À SCREENSHOTER -->
+        <div class="md:col-span-7">
+          <div class="rounded-2xl bg-yellow-400 text-black p-1 shadow-2xl">
+            <div class="bg-zinc-950 text-white rounded-xl p-5 border border-black space-y-4">
+              <div class="flex items-center justify-between border-b border-white/15 pb-3">
+                <div>
+                  <span class="text-[10px] mono font-black text-yellow-400 block">BILLET D'EMBARQUEMENT OFFICIEL • ALLER SIMPLE</span>
+                  <span class="font-impact text-2xl tracking-wide">ULTRA-MARATHON DE LA MÈKE 🕋</span>
+                </div>
+                <div class="text-right">
+                  <span class="bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded mono block">VOL #MK-777</span>
+                  <span class="text-[10px] text-zinc-400 mono">PORTE : GAUCHE</span>
+                </div>
+              </div>
+
+              <div class="py-2">
+                <div class="text-[10px] text-zinc-400 uppercase font-bold">Passager / Toupie Humaine :</div>
+                <div id="tName" class="font-impact text-3xl sm:text-4xl text-yellow-400 uppercase tracking-wide">LE TOURBILLON DU 974</div>
+                <div id="tPack" class="text-xs font-extrabold text-emerald-400 mono mt-0.5">PACK TÉLÉPÉAGE GAUCHE (BEYBLADE PRO)</div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 border-t border-white/15 text-xs">
+                <div class="bg-white/5 p-2.5 rounded-lg">
+                  <span class="text-[10px] text-zinc-400 block uppercase">Bilan Médical :</span>
+                  <span id="tHandicap" class="font-bold text-white mono text-[11px]">CARDIO DE FUMEUR DE PUFF</span>
+                </div>
+                <div class="bg-white/5 p-2.5 rounded-lg">
+                  <span class="text-[10px] text-zinc-400 block uppercase">Stratégie Déclarée :</span>
+                  <span id="tStrat" class="font-bold text-amber-300 mono text-[11px]">SE CACHER DERRIÈRE UN PILIER 4 HEURES</span>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-dashed border-white/20 flex items-center justify-between text-[10px] mono text-zinc-400">
+                <span>ENGAGEMENT IRRÉVOCABLE DEVANT LE GROUPE</span>
+                <span class="text-yellow-400 font-bold">█║▌│█│║▌║││█║▌</span>
+              </div>
+            </div>
+          </div>
+          <p class="text-center text-xs text-yellow-400 font-bold mt-3 mono">
+            📸 Prends un screen de ce billet et balance-le dans le groupe Snap !
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    let laps = 0;
+    let angle = 0;
+
+    function doLap() {
+      laps++;
+      angle -= 72; // Tourne dans le sens anti-horaire !
+      document.getElementById('orbitRunner').style.transform = `rotate(${angle}deg)`;
+      document.getElementById('simCounter').innerText = `${laps} ${laps > 1 ? 'TOURS EFFECTUÉS' : 'TOUR EFFECTUÉ'}`;
+
+      const status = document.getElementById('simStatus');
+      if (laps === 3) status.innerText = "Tour 3 : Tu commences déjà à regretter d'avoir ouvert ta bouche dans le groupe.";
+      if (laps === 7) status.innerText = "Tour 7 : Échauffement terminé. Il ne te reste plus que 49 993 tours.";
+      if (laps === 15) status.innerText = "Tour 15 : Ton genou gauche vient d'émettre un bruit de portail rouillé.";
+      if (laps === 25) status.innerText = "Tour 25 : Tu cours tellement vite que tu viens de te doubler toi-même.";
+      if (laps === 40) status.innerText = "Tour 40 : STATUT LÉGENDE — Tu es officiellement un ventilateur Rowenta.";
+    }
+
+    function selectPack(packName) {
+      document.getElementById('tPack').innerText = packName;
+    }
+
+    function updateTicket() {
+      const name = document.getElementById('pName').value.trim() || "DÉGONFLÉ ANONYME";
+      const handicap = document.getElementById('pHandicap').value;
+      const strat = document.getElementById('pStrat').value;
+
+      document.getElementById('tName').innerText = name.toUpperCase();
+      document.getElementById('tHandicap').innerText = handicap;
+      document.getElementById('tStrat').innerText = strat;
+    }
+  </script>
+</body>
+</html>
