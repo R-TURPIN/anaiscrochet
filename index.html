@@ -1,398 +1,69 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>MUL-5000™ — Championnat Mondial d'Endurance Centrifuge</title>
+  <title>ULTRA-MÈKE 3000™ — Le Dernier Qui Tourne Gagne</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap');
-    body { font-family: 'Space Grotesk', sans-serif; background-color: #090a0f; color: #f8fafc; }
+    @import url('https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #070709; color: #ffffff; overflow-x: hidden; }
+    .font-impact { font-family: 'Anton', sans-serif; letter-spacing: 0.03em; }
     .mono { font-family: 'JetBrains Mono', monospace; }
-    @keyframes spin-slow { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-    .animate-counter-spin { animation: spin-slow 12s linear infinite; }
-    .gold-gradient { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); }
-    .gold-text { background: linear-gradient(135deg, #fde68a 0%, #f59e0b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
+    .animate-marquee { display: flex; width: 200%; animation: marquee 18s linear infinite; }
+    @keyframes pulse-fast { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+    .btn-pulse { animation: pulse-fast 1.5s infinite; }
   </style>
 </head>
-<body class="min-h-screen selection:bg-amber-500 selection:text-black pb-20">
+<body class="min-h-screen pb-24 selection:bg-yellow-400 selection:text-black">
 
-  <!-- TOP TELEMETRY TICKER -->
-  <div class="bg-amber-500 text-black text-[11px] font-bold mono py-1.5 px-4 overflow-x-auto whitespace-nowrap border-b border-amber-600 flex items-center gap-6">
-    <span>🟢 STATUT DU MARBRE : HOMOLOGUÉ FIA (24.2°C)</span>
-    <span>•</span>
-    <span>🌀 SENS DE ROTATION : ANTI-HORAIRE STRICT</span>
-    <span>•</span>
-    <span>📐 DÉNIVELÉ POSITIF (D+) : 0.00 MÈTRE</span>
-    <span>•</span>
-    <span>⚡ RECORD DU GROUPE À BATTRE : 412 TOURS SANS S'ASSEOIR</span>
+  <!-- BANDEAU DÉFILANT ABSURDE -->
+  <div class="bg-yellow-400 text-black py-2 overflow-hidden border-b-2 border-black font-extrabold text-xs uppercase mono">
+    <div class="animate-marquee whitespace-nowrap flex gap-8">
+      <span>🚨 ALERTE GROUPE SNAP : OUVERTURE DES INSCRIPTIONS POUR L'ULTRA-MARATHON DE LA MÈKE</span>
+      <span>🌀 RÈGLE UNIQUE : CELUI QUI S'ARRÊTE PAYE LE TACOS À TOUT LE GROUPE</span>
+      <span>🌡️ MÉTÉO PRÉVUE : 49°C À L'OMBRE (MAIS Y A PAS D'OMBRE)</span>
+      <span>👟 CLAQUETTES-CHAUSSETTES AUTORISÉES EN CATÉGORIE SEMI-PRO</span>
+      <span>🚨 ALERTE GROUPE SNAP : OUVERTURE DES INSCRIPTIONS POUR L'ULTRA-MARATHON DE LA MÈKE</span>
+      <span>🌀 RÈGLE UNIQUE : CELUI QUI S'ARRÊTE PAYE LE TACOS À TOUT LE GROUPE</span>
+    </div>
   </div>
 
-  <!-- NAVBAR -->
-  <header class="border-b border-white/10 bg-[#090a0f]/90 backdrop-blur-md sticky top-0 z-40">
-    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400">
-          <i data-lucide="rotate-ccw" class="w-6 h-6 animate-counter-spin"></i>
+  <!-- HEADER -->
+  <header class="border-b border-white/10 bg-black/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 bg-yellow-400 text-black rounded-lg flex items-center justify-center font-black text-xl">
+          🕋
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <span class="font-bold text-lg tracking-tight">MUL-5000™</span>
-            <span class="text-[10px] mono uppercase px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 font-semibold">World Vortex Series</span>
-          </div>
-          <p class="text-[11px] text-slate-400">Fédération Internationale d'Ultra-Marathon Giratoire</p>
+          <span class="font-impact text-xl tracking-wider text-yellow-400">ULTRA-MÈKE 3000™</span>
+          <span class="block text-[10px] text-zinc-400 mono -mt-1">ÉDITION BATTLE ROYALE • SANS LIGNE D'ARRIVÉE</span>
         </div>
       </div>
-      <a href="#dossard" class="px-3.5 py-2 rounded-lg text-xs font-bold gold-gradient text-black shadow-lg shadow-amber-500/20 active:scale-95 transition">
-        PRENDRE MON DOSSARD
+      <a href="#billetterie" class="bg-red-600 hover:bg-red-500 text-white font-extrabold text-xs px-3.5 py-2 rounded-lg uppercase tracking-wider shadow-lg shadow-red-600/30">
+        Prendre ma place
       </a>
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-4 pt-8 space-y-10">
+  <main class="max-w-4xl mx-auto px-4 pt-8 space-y-12">
 
-    <!-- HERO SECTION -->
-    <section class="relative rounded-3xl border border-white/10 bg-gradient-to-b from-slate-900/90 to-[#090a0f] p-6 sm:p-10 overflow-hidden shadow-2xl">
-      <div class="absolute -right-20 -top-20 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold mb-4 mono">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        ÉDITION SPÉCIALE GROUPE SNAP • DERNIER DEBOUT GAGNE
+    <!-- HERO SECTION : LE GIGA SLOGAN -->
+    <section class="relative rounded-3xl border-2 border-yellow-400 bg-gradient-to-b from-zinc-900 to-black p-6 sm:p-10 text-center shadow-[0_0_50px_rgba(250,204,21,0.15)]">
+      <div class="inline-block bg-red-600 text-white text-[11px] font-black uppercase px-3 py-1 rounded-full mb-4 mono animate-bounce">
+        ⚡ ÉVÉNEMENT OFFICIEL DU GROUPE SNAP ⚡
       </div>
 
-      <h1 class="text-3xl sm:text-5xl font-bold tracking-tight leading-tight">
-        L'Ultra-Marathon où il est <span class="gold-text">impossible de se perdre.</span>
+      <h1 class="font-impact text-4xl sm:text-6xl uppercase leading-none text-white">
+        DÉJÀ RÊVÉ DE TOURNER EN ROND À L'INFINI AUTOUR DE <span class="text-yellow-400 underline decoration-wavy">LA MÈKE</span> ?
       </h1>
-      <p class="text-slate-400 text-sm sm:text-base mt-4 max-w-2xl leading-relaxed">
-        Oubliez l'UTMB et le Marathon des Sables. Bienvenue sur l'épreuve d'endurance la plus géométriquement pure de la planète : **un seul virage à gauche de 400 kilomètres**. Celui qui fait le plus de tours remporte le trophée et le respect éternel du groupe.
+
+      <p class="text-lg sm:text-2xl font-extrabold text-yellow-400 mt-4 uppercase">
+        Prends tes places maintenant ! Le dernier qui tombe gagne.
       </p>
 
-      <!-- KEY METRICS GRID -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8">
-        <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <div class="text-xs text-slate-400 flex items-center gap-1.5">
-            <i data-lucide="trending-up" class="w-3.5 h-3.5 text-amber-400"></i> Dénivelé (D+ / D-)
-          </div>
-          <div class="text-2xl font-bold mono mt-1 text-white">0,00 m</div>
-          <div class="text-[11px] text-slate-500 mt-0.5">Planéité laser ±0.02mm</div>
-        </div>
-
-        <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <div class="text-xs text-slate-400 flex items-center gap-1.5">
-            <i data-lucide="compass" class="w-3.5 h-3.5 text-amber-400"></i> Virages à droite
-          </div>
-          <div class="text-2xl font-bold mono mt-1 text-white">0</div>
-          <div class="text-[11px] text-slate-500 mt-0.5">100% pivot anti-horaire</div>
-        </div>
-
-        <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <div class="text-xs text-slate-400 flex items-center gap-1.5">
-            <i data-lucide="Footprints" class="w-3.5 h-3.5 text-amber-400"></i> Friction Marbre
-          </div>
-          <div class="text-2xl font-bold mono mt-1 text-white">μ = 0.14</div>
-          <div class="text-[11px] text-slate-500 mt-0.5">Thassos Blanc Glissant</div>
-        </div>
-
-        <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
-          <div class="text-xs text-slate-400 flex items-center gap-1.5">
-            <i data-lucide="gauge" class="w-3.5 h-3.5 text-amber-400"></i> Force Centrifuge
-          </div>
-          <div class="text-2xl font-bold mono mt-1 text-amber-400">3.8 G</div>
-          <div class="text-[11px] text-slate-500 mt-0.5">Sur le ménisque gauche</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TELEMETRY & BIOMECHANICAL SIMULATOR -->
-    <section class="rounded-3xl border border-white/10 bg-slate-900/60 p-6 sm:p-8 space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-4">
-        <div>
-          <h2 class="text-xl font-bold flex items-center gap-2">
-            <i data-lucide="activity" class="w-5 h-5 text-amber-400"></i>
-            Simulateur Biomécanique de Rotation
-          </h2>
-          <p class="text-xs text-slate-400 mt-0.5">Calculez l'impact de votre objectif de tours sur votre oreille interne et votre tibia gauche.</p>
-        </div>
-        <span class="text-[11px] mono bg-white/5 border border-white/10 px-2.5 py-1 rounded-lg text-slate-300 self-start">
-          Algorithme Certifié Strava Lab™
-        </span>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-        <!-- SLIDERS -->
-        <div class="md:col-span-6 space-y-5 bg-black/40 p-5 rounded-2xl border border-white/5">
-          <div>
-            <div class="flex justify-between text-sm mb-1.5">
-              <label class="font-semibold text-slate-300">Objectif de Tours (Loops)</label>
-              <span id="lapsVal" class="mono font-bold text-amber-400 text-base">500 tours</span>
-            </div>
-            <input type="range" id="lapsInput" min="7" max="3000" step="1" value="500" class="w-full accent-amber-500" oninput="updateSimulation()" />
-            <div class="flex justify-between text-[10px] text-slate-500 mono mt-1">
-              <span>7 (Échauffement)</span>
-              <span>1500 (Semi-Pro)</span>
-              <span>3000 (Légende)</span>
-            </div>
-          </div>
-
-          <div>
-            <div class="flex justify-between text-sm mb-1.5">
-              <label class="font-semibold text-slate-300">Couloir de Course choisi</label>
-              <span id="laneVal" class="mono font-bold text-emerald-400 text-xs">Couloir Interne (Rayon 18m)</span>
-            </div>
-            <input type="range" id="laneInput" min="1" max="3" step="1" value="1" class="w-full accent-emerald-500" oninput="updateSimulation()" />
-            <div class="flex justify-between text-[10px] text-slate-500 mono mt-1">
-              <span>1. Corde serrée (Vertige max)</span>
-              <span>2. Médian</span>
-              <span>3. Extérieur (Grand Braquet)</span>
-            </div>
-          </div>
-
-          <div>
-            <div class="flex justify-between text-sm mb-1.5">
-              <label class="font-semibold text-slate-300">Cadence de croisière</label>
-              <span id="speedVal" class="mono font-bold text-sky-400">11 km/h</span>
-            </div>
-            <input type="range" id="speedInput" min="4" max="22" step="1" value="11" class="w-full accent-sky-500" oninput="updateSimulation()" />
-          </div>
-        </div>
-
-        <!-- OUTPUT METRICS -->
-        <div class="md:col-span-6 grid grid-cols-2 gap-3">
-          <div class="bg-white/5 border border-white/10 rounded-xl p-3.5">
-            <span class="text-[11px] text-slate-400">Distance Totale</span>
-            <div id="outDist" class="text-xl font-bold mono text-white mt-0.5">56.5 km</div>
-            <span id="outTime" class="text-[11px] text-amber-400 mono">~5h 08min non-stop</span>
-          </div>
-
-          <div class="bg-white/5 border border-white/10 rounded-xl p-3.5">
-            <span class="text-[11px] text-slate-400">Asymétrie Tibiale</span>
-            <div id="outLeg" class="text-xl font-bold mono text-rose-400 mt-0.5">-1.8 cm</div>
-            <span class="text-[11px] text-slate-500">Jambe gauche plus courte</span>
-          </div>
-
-          <div class="bg-white/5 border border-white/10 rounded-xl p-3.5">
-            <span class="text-[11px] text-slate-400">Ravitaillement Requis</span>
-            <div id="outDates" class="text-xl font-bold mono text-emerald-400 mt-0.5">142 dattes</div>
-            <span id="outWater" class="text-[11px] text-slate-500 mono">+ 8.4L d'eau de Zamzam</span>
-          </div>
-
-          <div class="bg-white/5 border border-white/10 rounded-xl p-3.5">
-            <span class="text-[11px] text-slate-400">Décalage de Coriolis</span>
-            <div id="outVertigo" class="text-sm font-bold mono text-purple-400 mt-1">Stade 3 : Machine à laver</div>
-            <span class="text-[11px] text-slate-500">Vous marcherez en crabe 4 jours</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- USELESS SCIENTIFIC & TECHNICAL INFOS -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="rounded-2xl border border-white/10 bg-slate-900/40 p-5 space-y-2">
-        <div class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
-          <i data-lucide="wind" class="w-5 h-5"></i>
-        </div>
-        <h3 class="font-bold text-base">Aérodynamisme Épaule Droite</h3>
-        <p class="text-xs text-slate-400 leading-relaxed">
-          Les tests en soufflerie chez Sauber F1 sont formels : dégager l'épaule droite réduit la traînée aérodynamique de **4,7 %** dans les courbes serrées et améliore le refroidissement axillaire de **12 W/m²**.
-        </p>
-      </div>
-
-      <div class="rounded-2xl border border-white/10 bg-slate-900/40 p-5 space-y-2">
-        <div class="w-9 h-9 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center">
-          <i data-lucide="satellite" class="w-5 h-5"></i>
-        </div>
-        <h3 class="font-bold text-base">Anomalie GPS Strava</h3>
-        <p class="text-xs text-slate-400 leading-relaxed">
-          À cause du rayon de braquage court, votre trace Strava ressemblera à un plat de spaghettis dessiné par un enfant sous caféine. Une puce RFID est donc fixée à votre gros orteil gauche pour compter chaque tour.
-        </p>
-      </div>
-
-      <div class="rounded-2xl border border-white/10 bg-slate-900/40 p-5 space-y-2">
-        <div class="w-9 h-9 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center">
-          <i data-lucide="rotate-cw" class="w-5 h-5"></i>
-        </div>
-        <h3 class="font-bold text-base">Protocole de « Dé-vissage »</h3>
-        <p class="text-xs text-slate-400 leading-relaxed">
-          Au-delà de 800 tours dans le sens anti-horaire, le liquide céphalo-rachidien continue de tourner pendant 48h. Une cellule psychologique fait tourner les finishers dans l'autre sens sur un tabouret de bar à l'arrivée.
-        </p>
-      </div>
-    </section>
-
-    <!-- OFFICIAL RULES -->
-    <section class="rounded-3xl border border-white/10 bg-slate-900/60 p-6 sm:p-8 space-y-4">
-      <h2 class="text-xl font-bold flex items-center gap-2">
-        <i data-lucide="scale" class="w-5 h-5 text-amber-400"></i>
-        Extrait du Règlement Officiel (Édition 2027)
-      </h2>
-      <div class="space-y-3 text-xs sm:text-sm text-slate-300">
-        <div class="p-3.5 rounded-xl bg-black/40 border border-white/5 flex gap-3">
-          <span class="mono font-bold text-amber-400 shrink-0">ART. 01</span>
-          <p><strong>Format Backyard Infini :</strong> La course n'a pas de ligne d'arrivée. Tant qu'il reste deux membres du groupe Snap debout, l'épreuve continue. Le premier qui s'assoit pour vérifier ses messages paye le resto à tout le groupe.</p>
-        </div>
-        <div class="p-3.5 rounded-xl bg-black/40 border border-white/5 flex gap-3">
-          <span class="mono font-bold text-amber-400 shrink-0">ART. 04</span>
-          <p><strong>Pneumatiques & Adhérence :</strong> Course pieds nus obligatoire (Catégorie *Barefoot Slick*). Toute application de résine de handball, de magnésie ou de chaussettes à picots antidérapants entraînera une pénalité de 50 tours.</p>
-        </div>
-        <div class="p-3.5 rounded-xl bg-black/40 border border-white/5 flex gap-3">
-          <span class="mono font-bold text-amber-400 shrink-0">ART. 09</span>
-          <p><strong>Contrôle Anti-Dopage :</strong> Seul le glucose issu de dattes homologuées est toléré. Les gels énergétiques goût fruits rouges et le pré-workout dans la gourde sont passibles de disqualification immédiate.</p>
-        </div>
-        <div class="p-3.5 rounded-xl bg-black/40 border border-white/5 flex gap-3">
-          <span class="mono font-bold text-amber-400 shrink-0">ART. 12</span>
-          <p><strong>Appel Vidéo d'Abandon :</strong> Tout participant victime d'un tournis aigu doit impérativement faire un Snap vidéo en direct en criant <em>« J'ai plus de ménisque »</em> pour valider son abandon officiel.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- DOSSARD GENERATOR -->
-    <section id="dossard" class="rounded-3xl border border-amber-500/40 bg-gradient-to-br from-slate-900 to-black p-6 sm:p-8 space-y-6 shadow-2xl">
-      <div>
-        <span class="text-xs font-bold uppercase mono text-amber-400">Homologation Officielle Groupe Snap</span>
-        <h2 class="text-2xl font-bold mt-1">Générer mon Dossard d'Athlète</h2>
-        <p class="text-xs text-slate-400 mt-1">Remplis tes infos, fais une capture d'écran de ton dossard et envoie-la dans le groupe pour valider ton inscription.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-        <!-- FORM -->
-        <div class="md:col-span-5 space-y-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Pseudo / Prénom de l'athlète</label>
-            <input type="text" id="runnerName" placeholder="Ex: Le Guépard du 974" value="CHAMPION DU GROUPE"
-                   class="w-full rounded-xl bg-white/5 border border-white/15 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
-                   oninput="renderBib()" />
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Spécialité Tactique</label>
-            <select id="runnerSpec" onchange="renderBib()" class="w-full rounded-xl bg-slate-800 border border-white/15 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-              <option value="DRIFT SUR MARBRE À LA CORDE">Drift sur marbre à la corde</option>
-              <option value="ASPIRATION DANS LE SILLAGE">Aspiration aérodynamique dans le dos</option>
-              <option value="ULTRA-FONDEUR SOUS DATTES">Ultra-Fondeur sous dattes Medjool</option>
-              <option value="TOURBILLON HUMAIN SANS VERTIGE">Tourbillon humain sans oreille interne</option>
-              <option value="ABANDON AU 3ÈME TOUR (CLaquage)">Abandon programmé au 3ème tour</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-400 mb-1">Objectif Officiel Déclaré</label>
-            <select id="runnerGoal" onchange="renderBib()" class="w-full rounded-xl bg-slate-800 border border-white/15 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
-              <option value="1 000 TOURS (113 KM)">1 000 Tours — Catégorie Élite</option>
-              <option value="500 TOURS (56 KM)">500 Tours — Solide sur les appuis</option>
-              <option value="2 500 TOURS (RECORD MONDIAL)">2 500 Tours — Foreuse Humaine</option>
-              <option value="1 TOUR DE PLUS QUE TOUT LE MONDE">Juste 1 tour de plus que les autres</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- LIVE BIB CARD (SCREENSHOT READY) -->
-        <div class="md:col-span-7">
-          <div class="rounded-2xl border-2 border-amber-400 bg-[#0d1017] p-6 relative overflow-hidden shadow-xl">
-            <div class="flex items-center justify-between border-b border-white/10 pb-3">
-              <div>
-                <div class="text-[10px] mono font-bold text-amber-400 tracking-widest">WORLD VORTEX SERIES • MUL-5000™</div>
-                <div class="text-xs font-bold text-white">DOSSARD OFFICIEL HOMOLOGUÉ</div>
-              </div>
-              <div class="px-2.5 py-1 rounded bg-amber-500 text-black font-bold mono text-xs">
-                CAT. ÉLITE
-              </div>
-            </div>
-
-            <div class="my-5 text-center">
-              <div class="text-5xl sm:text-6xl font-bold mono tracking-tighter text-white" id="bibNumber">#777-G</div>
-              <div class="text-lg sm:text-xl font-bold uppercase text-amber-400 mt-2 tracking-wide" id="bibName">CHAMPION DU GROUPE</div>
-              <div class="text-xs mono text-slate-400 mt-1" id="bibSpec">SPÉCIALITÉ : DRIFT SUR MARBRE À LA CORDE</div>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2 pt-3 border-t border-white/10 text-center mono">
-              <div class="bg-white/5 rounded-lg p-2">
-                <div class="text-[9px] text-slate-400">OBJECTIF</div>
-                <div class="text-[11px] font-bold text-emerald-400 truncate" id="bibGoal">1 000 TOURS</div>
-              </div>
-              <div class="bg-white/5 rounded-lg p-2">
-                <div class="text-[9px] text-slate-400">DÉNIVELÉ</div>
-                <div class="text-[11px] font-bold text-white">0.00m D+</div>
-              </div>
-              <div class="bg-white/5 rounded-lg p-2">
-                <div class="text-[9px] text-slate-400">SENS</div>
-                <div class="text-[11px] font-bold text-amber-400">ANTI-HORAIRE</div>
-              </div>
-            </div>
-          </div>
-          <p class="text-center text-[11px] text-slate-500 mt-2 mono">
-            📸 Prends une capture d'écran de ce dossard et poste-la dans le groupe Snap.
-          </p>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <script>
-    lucide.createIcons();
-
-    function updateSimulation() {
-      const laps = parseInt(document.getElementById('lapsInput').value);
-      const lane = parseInt(document.getElementById('laneInput').value);
-      const speed = parseInt(document.getElementById('speedInput').value);
-
-      // Rayon moyen selon le couloir (18m, 32m, 48m)
-      const radii = { 1: 18, 2: 32, 3: 48 };
-      const laneNames = {
-        1: 'Couloir Interne (Rayon 18m)',
-        2: 'Couloir Médian (Rayon 32m)',
-        3: 'Couloir Extérieur (Rayon 48m)'
-      };
-
-      const r = radii[lane];
-      const circumferenceMeters = 2 * Math.PI * r;
-      const totalKm = (laps * circumferenceMeters) / 1000;
-      const hoursTotal = totalKm / speed;
-      const h = Math.floor(hoursTotal);
-      const m = Math.round((hoursTotal - h) * 60);
-
-      // Asymétrie jambe gauche vs jambe droite (plus le rayon est court, plus ça tasse le ménisque gauche)
-      const legDiffCm = ((laps * (40 / r)) * 0.0018).toFixed(2);
-      const datesCount = Math.ceil(totalKm * 2.5);
-      const waterLiters = (totalKm * 0.15).toFixed(1);
-
-      let vertigo = "Stade 1 : Léger tangage";
-      if (laps > 150) vertigo = "Stade 2 : Toupie Beyblade";
-      if (laps > 600) vertigo = "Stade 3 : Essorage 1400 tr/min";
-      if (laps > 1500) vertigo = "Stade 4 : Satellite en orbite";
-
-      document.getElementById('lapsVal').innerText = `${laps} tours`;
-      document.getElementById('laneVal').innerText = laneNames[lane];
-      document.getElementById('speedVal').innerText = `${speed} km/h`;
-
-      document.getElementById('outDist').innerText = `${totalKm.toFixed(1)} km`;
-      document.getElementById('outTime').innerText = `~${h}h ${String(m).padStart(2, '0')}min non-stop`;
-      document.getElementById('outLeg').innerText = `-${legDiffCm} cm`;
-      document.getElementById('outDates').innerText = `${datesCount} dattes`;
-      document.getElementById('outWater').innerText = `+ ${waterLiters}L d'eau de Zamzam`;
-      document.getElementById('outVertigo').innerText = vertigo;
-    }
-
-    function renderBib() {
-      const name = document.getElementById('runnerName').value.trim() || "ATHLÈTE ANONYME";
-      const spec = document.getElementById('runnerSpec').value;
-      const goal = document.getElementById('runnerGoal').value;
-
-      // Génère un numéro de dossard pseudo-aléatoire stable selon le nom
-      let hash = 0;
-      for (let i = 0; i < name.length; i++) {
-        hash = name.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      const num = Math.abs(hash % 899) + 100;
-
-      document.getElementById('bibName').innerText = name.toUpperCase();
-      document.getElementById('bibSpec').innerText = `SPÉCIALITÉ : ${spec}`;
-      document.getElementById('bibGoal').innerText = goal;
-      document.getElementById('bibNumber').innerText = `#${num}-G`;
-    }
-
-    updateSimulation();
-    renderBib();
-  </script>
-</body>
-</html>
+      <p class="text-zinc-300 text-sm sm:text-base mt-4 max-w-2xl mx-auto leading-relaxed">
+        Pourquoi courir tout droit quand on peut tourner à gauche pendant 14 jours d
